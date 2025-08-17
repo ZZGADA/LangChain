@@ -111,16 +111,16 @@ class LangChainGeminiBot:
             # 先测试网络连接
             # if not self.test_network_connection():
             #     return False
-            
+
             # 尝试不同的模型，优先使用稳定版本
             models_to_try = [
+                ("gemini-2.5-pro", "最新版本"),
                 ("gemini-1.5-flash", "稳定版本，推荐使用"),
                 ("gemini-1.5-pro", "高级版本"),
                 ("gemini-pro", "经典版本"),
                 ("gemini-2.0-flash-exp", "实验版本"),
-                ("gemini-2.5-pro", "最新版本")
             ]
-            
+
             for model_name, description in models_to_try:
                 try:
                     print(f"🧪 尝试模型: {model_name} ({description})")
