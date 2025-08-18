@@ -239,7 +239,20 @@ class LangChainGeminiBot:
         # 这里可以添加复杂的逻辑判断
         # 例如：检查是否需要调用工具、是否需要额外处理等
         return "continue"
+
+    """
+   1. 创建状态图 (StateGraph)：初始化一个 StateGraph 对象，并指定 ChatState 。ChatState
+      用来在工作流的每一步之间传递数据（如消息历史、用户信息等）。
+   2. 添加节点 (Node)：它添加了一个名为 "chatbot" 的核心节点，这个节点关联到 self.chatbot_node 方法。节点是图中的基本处理单元，chatbot_node
+      负责调用大语言模型并获取回复。
+   3. 定义流程边 (Edge)：
+       * workflow.add_edge(START, "chatbot"): 这条边定义了工作流的入口。当图开始执行时，会首先进入 "chatbot" 节点。
+       * workflow.add_edge("chatbot", END): 这条边定义了 "chatbot" 节点执行完毕后，工作流就结束了。
+   4. 编译图 (Compile)：最后，它调用 workflow.compile(checkpointer=self.memory) 来将定义好的节点和边编译成一个可执行的图。关键在于
+      checkpointer=self.memory，它为图添加了记忆功能，使得每次调用的状态（比如对话历史）都能被保存和恢复。
+
     
+    """
     def build_graph(self):
         """构建 LangGraph 状态图"""
         try:
@@ -417,7 +430,7 @@ class LangChainGeminiBot:
                 import time
                 for char in response:
                     print(char, end="", flush=True)
-                    time.sleep(0.01)
+                    # time.sleep(0.01)
                 
                 print("\n")
                 
